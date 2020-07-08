@@ -1,0 +1,1994 @@
+openapi: 3.0.3
+servers:
+  - url: "http://service.qr.info/v1"
+    description: APIs for QR Info.
+  - url: "http://service.qr.info:4000/v1"
+    description: APIs for QR Info in Testing environment.
+  - url: "http://localhost:4000/v1"
+    description: APIs for QR Info in Local environment.
+tags:
+  - name: Authentication
+  - name: Product Management
+  - name: Product Category Management
+  - name: Category Management
+  - name: Product Photo Management
+  - name: Product Share Management
+  - name: Business Management
+
+components:
+  schemas:
+
+    Business:
+      type: object
+      required:
+        - id
+        - name
+        - businessAreas
+        - address
+        - phone
+        - email
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 102
+        name:
+          type: string
+          example: Name of Business
+        desc:
+          type: string
+          example: Description of business
+        businessAreas:
+          type: string
+          example: Areas of business
+        address:
+          type: string
+          example: Address of business
+        phone:
+          type: string
+          format: phone
+          example: 038 265 2677
+        email:
+          type: string 
+          format: email
+          example: contact@vtsspace.com
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+  
+    ProductShare:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        product:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int64
+            name:
+              type: string
+        business:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int64
+            name:
+              type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        expired:
+          type: boolean
+        visitors:
+          type: number
+        disabled:
+          type: boolean
+        sharingURL:
+          type: string
+          format: url
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+
+    ProductPhoto:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        product:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int64
+            product:
+              type: object
+              properties:
+                id:
+                  type: number
+                  format: int64
+                name:
+                  type: string
+            business:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+            source:
+              type: string
+              description: path to image of system
+            externalURL:
+              type: string
+              format: url
+            createdAt:
+              type: string
+              format: date-time
+            createdBy:
+              $ref: "#/components/schemas/Modifier"
+            updatedAt:
+              type: string
+              format: date-time
+            updatedBy:
+              $ref: "#/components/schemas/Modifier"
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        business:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        name:
+          type: string
+        desc:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+
+    ProductCategory:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        product:
+          type: object
+          properties:
+            id:
+              type: number
+              format: int64
+            name:
+              type: string
+        business:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        category:
+          type: object
+          properties:
+            id:
+              type: number
+            name:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+
+    List:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 10
+        page:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 1
+        totalPages:
+          type: integer
+          example: 10
+
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - desc
+        - shortDesc
+        - category
+        - createdBy
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        name:
+          type: string
+        shortDesc:
+          type: string
+        desc:
+          type: string
+        price:
+          type: number
+          format: int64
+        salePrice:
+          type: number
+          format: int64
+        category:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: number
+                format: int64
+              name:
+                type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+
+    Modifier:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - status
+        - createdBy
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        username:
+          type: string
+        phone:
+          type: string
+          format: phone
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum: ["ACTIVED", "STANDBY", "WARNING"]
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          $ref: "#/components/schemas/Modifier"
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          $ref: "#/components/schemas/Modifier"
+    Message:
+      type: object
+      required:
+        - code
+        - type
+        - message
+      properties:
+        code:
+          type: integer
+        type:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+
+  responses:
+    401-Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          example:
+            code: 401
+            message: Unauthorized
+            name: Unauthorized
+    405-MethodNotAllowed:
+      description: Method Not Allowed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          example:
+            code: 405
+            message: Method Not Allowed
+            name: MethodNotAllowed
+    404-NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          example:
+            code: 404
+            message: Not found.
+            name: NotFound
+
+    400-BadRequest:
+      description: Bad Request Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          example:
+            code: 400
+            message: Bad request error.
+            name: BadRequest
+
+    500-InternalServer:
+      description: Internal Server Errror
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          example:
+            code: 500
+            message: Message to example intternal server error code
+            name: InternalServerError
+
+    403-Forbidden:
+      description: Forbidden Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Message"
+          examples:
+            auth:
+              summary: Wrong username/password.
+              value:
+                code: 403
+                message: Incorrect username/password.
+                name: ForbiddenError
+            allow:
+              summary: Not allow access business.
+              value:
+                code: 403
+                message: Business is not allowed.
+                name: BusinessNotAllow
+
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    Operator:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - Bearer: []
+
+info:
+  description: >-
+    APIs for QR Infomation.
+  version: 1.0.0
+  title: APIs for QR CODE Product Sharing
+  termsOfService: "http://qr.infi/terms/"
+  contact:
+    email: nguyenvantien2009@gmail.com
+  license:
+    name: QR Info License
+    url: "http://qr.info"
+
+paths:
+  /product-share/{product-id}:
+    get:
+      description: List sharing of product.
+      summary: List sharing of product.
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '404':
+          description: Not found product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundProduct:
+                  description: Not found product
+                  summary: Not found product
+                  value:
+                    code: 404
+                    message: Not found product
+                    name: NotFoundProduct
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ProductShare"
+  
+
+    post:
+      description: >- 
+        Add new product sharing. `sharing_code` and `sharing_url` auto generate by the system.
+        And visitors will auto-increase when URL accessed.
+      summary: Add new product sharing
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-id
+          required: true
+          in: path
+          schema:
+            type: number
+            format: int64
+          example: 123
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessId
+                - productId
+                - start
+              properties:
+                businessId:
+                  type: integer
+                  example: 123
+                productId:
+                  type: number
+                  format: int64
+                  example: 123
+                start:
+                  type: string
+                  format: date-time
+                  example: "2020-11-21 12:12:01"
+                end:
+                  type: string
+                  format: date-time
+                  example: "2020-11-21 12:12:01"
+                expired:
+                  type: boolean
+                  example: false
+                disabled:
+                  type: boolean
+                  default: false
+                  example: false
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '404':
+          description: Not found business/product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundBusiness:
+                  summary: Not found business
+                  value:
+                    code: 404
+                    message: Not Found Business
+                    name: NotFoundBusiness
+                NotFoundProduct:  
+                  summary: Not found product
+                  value:
+                    code: 404
+                    message: Not found product
+                    name: NotFoundProduct
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref:  "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref:  "#/components/schemas/ProductShare"
+  
+
+    put:
+      description: Update a product sharing.
+      summary: Update a product sharing.
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 120
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessId
+                - productId
+                - start
+              properties:
+                businessId:
+                  type: integer
+                productId:
+                  type: number
+                  format: int64
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+                expired:
+                  type: boolean
+                  default: false
+                disabled:
+                  type: boolean
+                  default: false
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '404':
+          description: Not found business/ product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundBusiness:
+                  description: Not found business
+                  summary: Not found business
+                  value:
+                    code: 404
+                    message: Not found business
+                    name: NotFoundBusiness
+                NotFoundProduct:
+                  description: Not found product
+                  summary: Not found product
+                  value:
+                    code: 404
+                    message: Not found product
+                    name: NotFoundProduct
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductShare"
+
+  /product-share/{product-share-id}:
+    get:
+      description: Get a product sharing by id.
+      summary: Get a product sharing by id.
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-share-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductShare"
+
+    patch:
+      description: Update product sharing.
+      summary: Update product sharing.
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-share-id
+          in: path
+          required: true
+          schema:
+            type: number
+            format: int64
+          example: 102
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                businessId:
+                  type: integer
+                productId:
+                  type: number
+                  format: int64
+                start:
+                  type: string
+                  format: date-time
+                end:
+                  type: string
+                  format: date-time
+                expired:
+                  type: boolean
+                disabled: 
+                  type: boolean
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '404':
+          description: Not found business or product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundBusiness:
+                  description: Not found business
+                  summary: Not found business
+                  value:
+                    code: 404
+                    message: Not found business
+                    name: NotFoundBusiness
+                NotFoundProduct:
+                  description: Not found product
+                  summary: Not found product
+                  value:
+                    code: 404
+                    message: Not found product
+                    name: NotFoundProduct
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductShare"
+
+    delete:
+      description: Delete a product sharing.
+      summary: Delete a product sharing.
+      tags:
+        - Product Share Management
+      parameters:
+        - name: product-share-id
+          in: path
+          required: true
+          schema:
+            type: number
+            format: int64
+          example: 1003      
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Delete success
+                name: Success
+
+  /business:
+    get:
+      description: List business of current user (owner). Current user base on Authentication header of request.
+      summary: List business owner.
+      tags:
+        - Business Management
+      parameters:
+        - name: name
+          description: filter by business name with like `%{name}%`.
+          in: query
+          schema:
+            type: string
+          example: Name of business
+        - name: areas
+          description: filter by business areas with like `%{areas}%`.
+          in: query
+          schema:
+            type: string
+          example: Printer for Industry
+        - name: phone
+          in: query
+          schema:
+            type: string
+            format: phone
+        - name: email
+          in: query
+          schema:
+            type: string
+            format: email
+          example: contact@vtsspace.com
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Business"
+
+    post:
+      description: Add new business
+      summary: Add new business
+      tags:
+        - Business Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - phone
+                - email
+              properties:
+                name:
+                  type: string
+                  example: Name of business
+                desc:
+                  type: string
+                  example: Description of business
+                areas:
+                  type: string
+                  example: Areas of business
+                address:
+                  type: string
+                  example: Address of business
+                phone:
+                  type: string
+                  format: phone
+                  example: 038 265 2677
+                email:
+                  type: string
+                  format: email
+                  example: contact@vtsspace.com
+                  
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+          description: Wrong data format.
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+
+    put:
+      description: Update a business
+      summary: Update a business
+      tags:
+        - Business Management
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: number
+                  format: int64
+                  description: ID of business
+                  example: ID of business
+                name:
+                  type: string
+                  description: Name of business
+                  example: Name of business
+                desc:
+                  type: string
+                  example: Description of business
+                areas:
+                  type: string
+                  example: Areas of busness
+                address:
+                  type: string
+                  example: Address of business
+                phone:
+                  type: string
+                  format: phone
+                  example: 038 265 2677
+                email:
+                  type: string
+                  format: email
+                  example: contact@vtsspace.com
+      responses:
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+
+  /business/{id}:
+    get:
+      description: Get a business by business id.
+      summary: Get a business by business id.
+      tags:
+        - Business Management
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 1234
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+
+    delete:
+      description: Delete a business by ID
+      summary: Delete a business by ID
+      tags:
+        - Business Management
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: 102
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Delete success.
+                name: Success
+
+    patch:
+      description: Update business info by path method.
+      summary: Update business info by path method.
+      tags:
+        - Business Management
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+          example: 102
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+                areas:
+                  type: string
+                phone:
+                  type: string
+                  format: phone
+                  example: 038 265 2677
+                email:
+                  type: string
+                  format: email
+                  example: contact@vtsspace.com
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '400': 
+          $ref: "#/components/responses/400-BadRequest"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+
+  /product-photo/{product-id}:
+    get:
+      description: List photo of product
+      summary: List photo of product
+      tags:
+        - Product Photo Management
+      parameters:
+        - name: product-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      responses:
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+          description: Not found product.
+          examples:
+            NotFoundProduct:
+              description: Not found product
+              value:
+                code: 404
+                message: Not found product
+                name: NotFoundProduct
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ProductPhoto"
+    post:
+      description: Add new photo for product
+      summary: Add new photo for product
+      tags:
+        - Product Photo Management
+      parameters:
+        - name: product-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessId
+                - productId
+                - source
+              properties:
+                businessId:
+                  type: number
+                  format: int64
+                productId:
+                  type: number
+                  format: int64
+                source:
+                  type: string
+                externalURL:
+                  type: string
+      responses:
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '404':
+          description: Error Not found product/business.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundBusiness:
+                  description: Not found business
+                  summary: Not found business
+                  value:
+                    code: 404
+                    message: Not found business
+                    name: NotFoundBusiness
+                NotFoundProduct:
+                  description: Not found product
+                  summary: Not found product
+                  value:
+                    code: 404
+                    message: Not found product
+                    name: Not found product
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+
+  /product-photo/{photo-id}:
+    delete:
+      description: Delete photo of product by id.
+      summary: Delete photo of product by id.
+      tags:
+        - Product Photo Management
+      parameters:
+        - name: photo-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '404':
+          description: Not found photo/product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundPhoto:
+                  description: Not found photo.
+                  summary: Not found photo.
+                  value:
+                    code: 404
+                    message: Not found photo.
+                    name: NotFoundPhoto
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Delete success.
+                name: Success
+
+    get:
+      description: Get a photo of product
+      summary: Get a photo of product
+      tags:
+        - Product Photo Management
+      parameters:
+        - name: photo-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 123
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '404':
+          description: Not found photo/product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/404-NotFound"
+              examples:
+                NotFoundPhoto:
+                  summary: Not found photo
+                  value:
+                    code: 404
+                    message: Not found photo
+                    name: NotFoundPhoto
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+
+  /category-product/{product-id}:
+    get:
+      description: List category by product
+      summary: List category by product
+      tags:
+        - Product Category Management
+      parameters:
+        - name: product-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true  
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+          description: Product id is not existed.
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    items:
+                      $ref: "#/components/schemas/Category"
+
+  /product-category/{category-id}:
+    get:
+      description: List product in category
+      summary: List product in category
+      tags:
+        - Product Category Management
+      parameters:
+        - name: category-id
+          in: path
+          schema: 
+            type: number
+            format: int64
+          required: true
+      responses:
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+          description: Category Id is not existed.
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Product"
+
+    delete:
+      description: Delete category in product.
+      summary: Delete category in product.
+      tags:
+        - Product Category Management
+      parameters:
+        - name: category-id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+          description: Not found product
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Remove category from Product is success.
+                name: Success
+  /category:
+    get:
+      description: List category
+      summary: List category
+      tags:
+        - Category Management
+      parameters:
+        - name: name
+          in: query
+          description: Name of project
+          schema:
+            type: string
+          example: Canon 2770
+        - name: desc
+          in: query
+          description: filter result `%{desc}%`.
+          schema:
+            type: string
+          example: Canon Printer
+      responses:
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Category"
+
+    post:
+      description: Add new category
+      summary: Add new category
+      tags:
+        - Category Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessId
+                - name
+                - desc
+              properties:
+                businessId:
+                  type: integer
+                  example: 123
+                name:
+                  type: string
+                  example: Printer
+                desc:
+                  type: string
+                  example: Printer from Canon
+
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+    put:
+      description: Update a Category
+      summary: Update a Category
+      tags:
+        - Category Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - businessId
+              properties:
+                id:
+                  type: number
+                  format: int64
+                  example: 123
+                name:
+                  type: string
+                  example: Name of category
+                desc:
+                  type: string
+                  example: Description of category
+                businessId:
+                  type: integer
+                  example: 123
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        "404":
+          $ref: "#/components/responses/404-NotFound"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+
+  /category/{id}:
+    patch:
+      description: Update some field in category
+      summary: Update some field in category
+      tags:
+        - Category Management
+      parameters:
+        - name: id
+          in: path
+          description:  Id of category management
+          required: true
+          schema:
+            type: integer
+          example: 123
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - businessId
+              properties:
+                name:
+                  type: string
+                desc:
+                  type: string
+                businessId:
+                  type: integer
+
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+    delete:
+      description: Delete category
+      summary: Delete category
+      tags:
+        - Category Management
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: number
+          required: true
+          example: 124
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "404":
+          $ref: "#/components/responses/404-NotFound"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Delete success.
+                name: Success
+
+    get:
+      description: Get a category
+      summary: Ge a category
+      tags:
+        - Category Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+          example: 123
+      responses:
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /product:
+    get:
+      description: List products
+      summary: List products
+      tags:
+        - Product Management
+      parameters:
+        - name: q
+          schema:
+            type: string
+          required: false
+          description: query text find in name/shortDesc/desc.
+          in: query
+          example: QR Code
+        - name: from
+          schema:
+            type: string
+            format: date
+          in: query
+          example: "2020-10-21"
+        - name: to
+          schema:
+            type: string
+            format: date
+          in: query
+          example: "2020-10-23"
+      responses:
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/List"
+                  - type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Product"
+
+    post:
+      description: Add new product
+      summary: Add new product
+      tags:
+        - Product Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - shortDesc
+                - desc
+                - price
+                - salePrice
+              properties:
+                name:
+                  type: string
+                shortDesc:
+                  type: string
+                desc:
+                  type: string
+                price:
+                  type: number
+                  format: int64
+                salePrice:
+                  type: number
+                  format: int64
+                categoryId:
+                  type: array
+                  items:
+                    type: number
+                    format: int64
+      responses:
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+    put:
+      description: Update a product. Need all product's properties in request body.
+      summary: Update a product by product id in request body.
+      tags:
+        - Product Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - name
+                - shortDesc
+                - desc
+                - price
+                - salePrice
+                - categoryId
+              properties:
+                id: 
+                  type: number
+                  format: int64
+                name:
+                  type: string
+                shortDesc:
+                  type: string
+                desc:
+                  type: string
+                price:
+                  type: number
+                  format: int64
+                salePrice:
+                  type: number
+                  format: int64
+                categoryId:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "404":
+          $ref: "#/components/responses/404-NotFound"
+          description: Product id is not existed.
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+          description: Missing required properties or wrong format put data.
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+          description: Other errors include unknow error.
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+    
+  /product/{id}:
+    patch:
+      description: Update product
+      summary: Update product
+      tags:
+        - Product Management
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+          example: 1029
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: number
+                  format: int64
+                name:
+                  type: string
+                shortDesc:
+                  type: string
+                desc:
+                  type: string
+                price:
+                  type: number
+                  format: int64
+                salePrice:
+                  type: number
+                  format: int64
+      responses:
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+        "404":
+          $ref: "#/components/responses/404-NotFound"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+    delete:
+      description: delete product
+      summary: delete product
+      tags:
+        - Product Management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            format: int64
+          example: 102
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        "404":
+          $ref: "#/components/responses/404-NotFound"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Delete success.
+                name: Success
+
+    get:
+      description: Get a product
+      summary: Get a product
+      tags:
+        - Product Management
+      parameters:
+        - name: id 
+          in: path
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        '401':
+          $ref: "#/components/responses/401-Unauthorized"
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '404':
+          $ref: "#/components/responses/404-NotFound"
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /logout:
+    get:
+      description: Logout
+      summary: Logout system
+      tags:
+        - Authentication
+      responses:
+        '403':
+          $ref: "#/components/responses/403-Forbidden"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Logout success
+                name: Success
+  /register:
+    post:
+      summary: Register new user
+      description: Register new user
+      security: []
+      tags:
+        - Authentication
+      parameters:
+        - name: X-App-Key
+          description: Provided by VTS Space
+          schema:
+            type: string
+          in: header
+          required: true
+          example: fb2c4206-bc28-11ea-b3de-0242ac130004
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+                - firstName
+                - lastName
+                - email
+                - phone
+                - address1
+                - city
+                - countryCode
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phone:
+                  type: string
+                  format: phone
+                email:
+                  type: string
+                  format: email
+                address1:
+                  type: string
+                address2:
+                  type: string
+                district:
+                  type: string
+                city:
+                  type: string
+                countryCode:
+                  type: string
+            example:
+              username: testuser
+              password: 123456
+              firstName: Test
+              lastName: Name
+              phone: 038 1872 1249
+              email: contact@qr.info
+              countryCode: VN
+      responses:
+        '400':
+          $ref: "#/components/responses/400-BadRequest"
+        '500':
+          $ref: "#/components/responses/500-InternalServer"
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+                
+  /login:
+    post:
+      summary: Login System
+      description: Login
+      security: []
+      tags:
+        - Authentication
+      parameters:
+        - name: X-App-Key
+          description: Provided by VTS Space
+          schema:
+            type: string
+          in: header
+          required: true
+          example: fb2c4206-bc28-11ea-b3de-0242ac130004
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+            example:
+              username: demouser
+              password: 123456
+      responses:
+        "500":
+          $ref: "#/components/responses/500-InternalServer"
+        "403":
+          $ref: "#/components/responses/403-Forbidden"
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+              example:
+                code: 200
+                message: Login success.
+                name: Success
